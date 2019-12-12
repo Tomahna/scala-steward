@@ -44,7 +44,13 @@ class Http4sGitlabApiAlgTest extends AnyFunSuite with Matchers {
   implicit val client: Client[IO] = Client.fromHttpApp(routes.orNotFound)
   implicit val httpJsonClient: HttpJsonClient[IO] = new HttpJsonClient[IO]
   val gitlabApiAlg =
-    new Http4sGitLabApiAlg[IO](config.vcsApiHost, user, _ => IO.pure, doNotFork = false)
+    new Http4sGitLabApiAlg[IO](
+      config.vcsApiHost,
+      user,
+      _ => IO.pure,
+      doNotFork = false,
+      mergeWhenPipelineSucceed = false
+    )
 
   val data = UpdateData(
     Repo("foo", "bar"),
@@ -73,7 +79,13 @@ class Http4sGitlabApiAlgTest extends AnyFunSuite with Matchers {
 
   test("createPullRequest -- no fork") {
     val gitlabApiAlgNoFork =
-      new Http4sGitLabApiAlg[IO](config.vcsApiHost, user, _ => IO.pure, doNotFork = true)
+      new Http4sGitLabApiAlg[IO](
+        config.vcsApiHost,
+        user,
+        _ => IO.pure,
+        doNotFork = true,
+        mergeWhenPipelineSucceed = false
+      )
     val prOut =
       gitlabApiAlgNoFork
         .createPullRequest(Repo("foo", "bar"), newPRData)

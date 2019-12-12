@@ -35,7 +35,13 @@ class VCSSelection[F[_]: Sync](implicit client: HttpJsonClient[F], user: Authent
   private def gitlab(config: Config): Http4sGitLabApiAlg[F] = {
     import org.scalasteward.core.gitlab.http4s.authentication.addCredentials
 
-    new Http4sGitLabApiAlg[F](config.vcsApiHost, user, _ => addCredentials(user), config.doNotFork)
+    new Http4sGitLabApiAlg[F](
+      config.vcsApiHost,
+      user,
+      _ => addCredentials(user),
+      config.doNotFork,
+      config.gitlabAutoMerge
+    )
   }
 
   private def bitbucket(config: Config): Http4sBitbucketApiAlg[F] = {

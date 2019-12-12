@@ -52,7 +52,8 @@ object Cli {
       envVar: List[EnvVar] = Nil,
       pruneRepos: Boolean = false,
       processTimeout: FiniteDuration = 10.minutes,
-      scalafixMigrations: Option[String] = None
+      scalafixMigrations: Option[String] = None,
+      gitlabAutoMerge: Boolean = false
   )
 
   final case class EnvVar(name: String, value: String)

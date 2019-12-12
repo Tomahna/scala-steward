@@ -16,6 +16,8 @@
 
 package org.scalasteward.core.gitlab
 
+import cats.instances.long.catsStdShowForLong
+import cats.syntax.show._
 import org.http4s.Uri
 import org.scalasteward.core.git.Branch
 import org.scalasteward.core.vcs.data.Repo
@@ -34,6 +36,9 @@ class Url(apiHost: Uri) {
 
   def mergeRequest(repo: Repo): Uri =
     repos(repo) / "merge_requests"
+
+  def acceptMergeRequest(repo: Repo, mergeRequestId: Long): Uri =
+    mergeRequest(repo) / mergeRequestId.show / "merge"
 
   def listMergeRequests(repo: Repo, source: String, target: String): Uri =
     mergeRequest(repo)
